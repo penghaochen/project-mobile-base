@@ -35,17 +35,17 @@ export function setMenuOther() {
           {
             'type': 'view',
             'name': '我的poc',
-            'url': 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx63d888c54735bdee&redirect_uri=http%3a%2f%2f192.168.228.221%3a8080&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
+            'url': 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx63d888c54735bdee&redirect_uri=http%3a%2f%2f192.168.230.11%3a8080&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect'
           }
         ]
       }
     ],
     'matchrule': {
-      'client_platform_type': '2'
+      'client_platform_type': '1'
     }
   }
   return request({
-    url: '/wcb/wx/cgi-bin/menu/addconditional?access_token=33_qp6fIMkw9owkziGwPIJ6kLZk0KKMm8y2uGdWPRYHS8zzczlEIiDxU4EQg3Y1b-KCeUI5WJJZLcx-lBo8x_pljxKff8r2AjyvRA74zJGmgy5AfBIhhXgRI135cl4riBNWnk7uNePn7_iHZk5SYGWeAHAEMC',
+    url: '/wcb/wx/cgi-bin/menu/addconditional?access_token=36_b65QaG9sjT5pxg4bcKJGcEKAEteamRLqSfsObM5xb-OXJk-MKeEOjh4GsKUFSKGnmfptW_1PvgPYjRDDfX4yL-Lej-NCBiezq0fuXfttKKpSuRVwtZdc7vccAsPFiBj3ZuV1OSnHeFWmnHtAVCAdAFAFMK',
     method: 'post',
     data: params
   })
@@ -66,13 +66,14 @@ export function getauthorize(params) {
     data: params
   })
 }
-// export function authTest(params) {
-//   return request({
-//     url: '/wechat/auth/test',
-//     method: 'post',
-//     data: {}
-//   })
-// }
+export function authTest(params) {
+  return request({
+    url: '/token/token/test',
+    method: 'get',
+    params: params
+  })
+}
+
 // // 获取token
 export function getToken(params) {
   return request({
@@ -90,7 +91,14 @@ export function getauthorizeTest(params) {
 }
 export function getImageCode(params) {
   return request({
-    url: '/picture/createCode',
+    url: '/captcha/picture/createCode',
+    method: 'post',
+    data: params
+  })
+}
+export function verifyCode(params) {
+  return request({
+    url: '/transfer/picture/transferCode',
     method: 'post',
     data: params
   })

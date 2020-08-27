@@ -7,7 +7,7 @@
       <swiper-slide><img src="@/assets/images/card1.jpg" class="img"></swiper-slide>
       <div slot="pagination" class="swiper-pagination"/>
     </swiper>
-    <img :src="imgCode">
+    <img :src="imgCode" @click="reCreateCode">
     <!-- 滑至第一张图 显示以下内容 -->
     <div v-show="activeIndex==0">
       <van-form @submit="onSubmit" @failed="onFailed">
@@ -140,7 +140,7 @@
 <script>
 import { Swiper, SwiperSlide } from 'vue-awesome-swiper' // 轮播插件
 import 'swiper/css/swiper.css'// 轮播插件样式
-import { getMsgCode, bindCard, getImageCode } from '@/api/wxpocApi'// 接口
+import { getMsgCode, bindCard, getImageCode, authTest, verifyCode } from '@/api/wxpocApi'// 接口
 import '@/utils/validate'// 验证规则
 
 export default {
@@ -187,16 +187,36 @@ export default {
 
   },
   mounted() {
-    const data = { 'token': '123123', 'ss': 'asdasdasdsad' }
-    getImageCode(data).then((res) => {
-      alert(JSON.stringify(res))
-      this.imgCode = res
-    })
-    // getToken().then((res) => {
+    this.reCreateCode()
+    // const data = { }
+    // getImageCode(data).then((res) => {
     //   alert(JSON.stringify(res))
+    //   const blob = new Blob([res])
+    //   const url = window.URL.createObjectURL(blob)
+    //   // this.imgCode = 'data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+    //   // this.picUrl = window.URL.createObjectURL(res.data)
+    //   this.imgCode = url
+    // })
+    // authTest().then(() => {
+    //   // alert('authTest:' + JSON.stringify(res))
     // })
   },
   methods: {
+    /**
+     * 点击刷新验证码
+     * @description 点击刷新验证码
+     */
+    reCreateCode() {
+      const data = { }
+      getImageCode(data).then((res) => {
+        alert(JSON.stringify(res))
+        const blob = new Blob([res])
+        const url = window.URL.createObjectURL(blob)
+        // this.imgCode = 'data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''))
+        // this.picUrl = window.URL.createObjectURL(res.data)
+        this.imgCode = url
+      })
+    },
     /**
      * 轮播完成事件
      * @description 完成一次轮播结束触发事件
@@ -209,31 +229,44 @@ export default {
      * @description 借记卡绑卡事件
      */
     onSubmit() {
-      const openId = sessionStorage.getItem('openId')
-      // const openId = 'oqPkFuJ3eqIrX-U0J1SxiapU44dc'// 测试
-      const params = {
-        openid: openId,
-        CardNo: this.cardNo,
-        BankAcType: '1',
-        Phone: this.phone,
-        MsgVali: this.code,
-        checked1: this.checked1,
-        checked2: this.checked2,
-        checked3: this.checked3
+      const imgcode = sessionStorage.getItem('imgcode')
+      // const openId = sessionStorage.getItem('openId')
+      const p = {
+        pictureCode: this.code,
+        lastRev: imgcode
       }
-      // 发送绑卡接口
-      const that = this
-      bindCard(params).then(res => {
-        this.$alert({ message: JSON.stringify(res.message) }).then(() => {
-          params.No = that.cardNo
-          params.Balance = res.data.Balance
-          // 跳转绑卡结果页
-          this.$store.state.params = params
-          that.$router.push(('/bindCardRes'))
-        })
-      }).catch(error => {
-        console.log(error)
+      // alert(JSON.stringify(p))
+      verifyCode(p).then(res => {
+        alert(JSON.stringify(res))
+        if (res.returnCode === '040003' || res.returnCode === '040004') {
+          this.reCreateCode()
+        }
       })
+      // const openId = 'oqPkFuJ3eqIrX-U0J1SxiapU44dc'// 测试
+      // const params = {
+      //   openid: openId,
+      //   CardNo: this.cardNo,
+      //   BankAcType: '1',
+      //   Phone: this.phone,
+      //   MsgVali: this.code,
+      //   checked1: this.checked1,
+      //   checked2: this.checked2,
+      //   checked3: this.checked3,
+      //   imgcode: imgcode
+      // }
+      // // 发送绑卡接口
+      // const that = this
+      // bindCard(params).then(res => {
+      //   this.$alert({ message: JSON.stringify(res.message) }).then(() => {
+      //     params.No = that.cardNo
+      //     params.Balance = res.data.Balance
+      //     // 跳转绑卡结果页
+      //     this.$store.state.params = params
+      //     that.$router.push(('/bindCardRes'))
+      //   })
+      // }).catch(error => {
+      //   console.log(error)
+      // })
     },
     /**
      * 表单验证错误处理事件

@@ -28,6 +28,7 @@ export default {
 
   },
   mounted() {
+    // setMenuOther()
     this.init()
   },
   methods: {
@@ -35,7 +36,7 @@ export default {
     init() {
       // 获取url中的code
       const code = GetUrlParams('code')
-      //alert('--1141-' + code)
+      //alert('code:' + code)
       const codeEnc = code
       // const codeEnc = 213213213
       // if (!codeEnc) return
@@ -47,7 +48,7 @@ export default {
        // alert('----' + JSON.stringify(res))
         // openid存浏览器缓存
         sessionStorage.setItem('uuid', JSON.stringify(res.data.uuid))
-        sessionStorage.setItem('openId', res.data.openid)
+        // sessionStorage.setItem('openId', res.data.openid)
       })
     },
     /**

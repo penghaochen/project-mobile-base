@@ -12,14 +12,14 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     host: '0.0.0.0',
-    port: 8088,
+    port: 8080,
     proxy: {
       '/pmobile': {
         // target: `http://0.0.0.0:8088/mock`, // 本地mock数据
         // target: 'http://192.168.228.216:8888', // 网关地址
         // target: 'http://192.168.228.216:8888', // 网关地址
         // target: 'https://api.weixin.qq.com', // 微信网关地址
-        target: 'http://192.168.230.8:9005', // 侯猛地址
+        target: 'http://192.168.230.142:8888', // 侯猛地址
         changeOrigin: true,
         ws: true,
         pathRewrite: {
