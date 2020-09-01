@@ -4,6 +4,7 @@
     <van-grid>
       <van-grid-item icon="photo-o" text="绑卡" @click="gotoMenu('BindCard')"/>
       <van-grid-item icon="photo-o" text="我的账户" @click="gotoMenu('Account')"/>
+      <van-grid-item icon="photo-o" text="密码控件" @click="gotoMenu('PwdBoard')"/>
     </van-grid>
   </div>
 </template>
@@ -36,7 +37,7 @@ export default {
     init() {
       // 获取url中的code
       const code = GetUrlParams('code')
-      //alert('code:' + code)
+      // alert('code:' + code)
       const codeEnc = code
       // const codeEnc = 213213213
       // if (!codeEnc) return
@@ -45,7 +46,7 @@ export default {
       }
 
       getauthorize(data).then(res => {
-       // alert('----' + JSON.stringify(res))
+        // alert('----' + JSON.stringify(res))
         // openid存浏览器缓存
         sessionStorage.setItem('uuid', JSON.stringify(res.data.uuid))
         // sessionStorage.setItem('openId', res.data.openid)

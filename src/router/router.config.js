@@ -9,12 +9,12 @@ import Router from 'vue-router'
 import home from './homeRoute' // 首页模块
 import account from './accountRoute' // 账户模块
 import bindCard from './bindCardRoute' // 绑卡模块
-
+import pwdBoard from './pwdBoardRoute' // 绑卡模块
 import store from '@/store/index' // 缓存数据
 Vue.use(Router)
 // 配置路由
 const RouterModel = new Router({
-  routes: [...home, ...account, ...bindCard,
+  routes: [...home, ...account, ...bindCard, ...pwdBoard,
     // 非匹配路由指向默认路由
     {
       path: '*',
